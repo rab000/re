@@ -134,9 +134,11 @@ class RoleEditor{
 
 	static void ProcessBone(string _boneFolderUrl)
 	{
+		Log.i ("RoleEditor","ProcessModel","开始打包骨骼，当前角色文件夹 _boneFolderUrl:"+_boneFolderUrl);
 		string[] _modelURLs = EditorHelper.GetSubFilesPaths(_boneFolderUrl);
 		GameObject _modelGo = null;
-		for (int j = 0; j < _modelURLs.Length; j++){//注意一个Model文件夹里目前只允许出现1个model，这个model包括所有换装模型
+		for (int j = 0; j < _modelURLs.Length; j++)//理论上可以有多个bone，这里资源文件夹里只放一个
+		{
 			if (!_modelURLs[j].EndsWith(".meta")){
 				Log.i ("RoleEditor","ProcessBone","开始骨骼地址 _modelURLs["+j+"]->"+_modelURLs[j]);
 				Object _modelObj = AssetDatabase.LoadAssetAtPath<Object>(EditorHelper.ChangeToRelativePath(_modelURLs[j]));
@@ -150,7 +152,7 @@ class RoleEditor{
 
 	static void ProcessModel(string _modelFolderUrl)
 	{
-		Log.i ("RoleEditor","ProcessModel","开始打包骨骼部位，当前角色文件夹 _modelFolderUrl:"+_modelFolderUrl);
+		Log.i ("RoleEditor","ProcessModel","开始打包部位，当前角色文件夹 _modelFolderUrl:"+_modelFolderUrl);
 		string[] _modelURLs = EditorHelper.GetSubFilesPaths(_modelFolderUrl);
 		GameObject _modelGo = null;
 		for (int j = 0; j < _modelURLs.Length; j++){//注意一个Model文件夹里目前只允许出现1个model，这个model包括所有换装模型
@@ -172,7 +174,7 @@ class RoleEditor{
 	/// <param name="_modelFolderUrl">Model folder URL.</param>
 	static void ProcessMat(string _matFolderUrl)
 	{
-
+		Log.i ("RoleEditor","ProcessMat","开始copy材质，当前材质文件夹 _matFolderUrl->"+_matFolderUrl);
 		//先将材质copy到用于打包的asset文件夹，然后再设定bundleName
 		string[] matURLs = EditorHelper.FindAllFileURLs(_matFolderUrl);
 		//创建目标mat文件夹，如果文件夹不存在则AssetDatabase.CopyAsset不会生效
@@ -190,7 +192,7 @@ class RoleEditor{
 		}
 
 
-		Log.i ("RoleEditor","ProcessMat","开始打包材质，当前角色文件夹 _matFolderUrl->"+_matFolderUrl);
+		Log.i ("RoleEditor","ProcessMat","开始打包材质，当前材质文件夹 folderPath->"+folderPath);
 		GeneratePartMatAB (folderPath);
 	}
 
@@ -233,11 +235,6 @@ class RoleEditor{
 
 			Log.i ("RoleEditor","CreateAllRoleAB","开始打包动画片段，当前动画组 _animGroupURLs["+j+"]->"+_animGroupURLs[j]);
 
-		//				AssetBundleBuild ab = new AssetBundleBuild();
-		//				ab.assetBundleName = _roleName + "_anim" +"_" + _animGroupName + EditorHelper.ABSuffixName;
-		//				ab.assetNames = _animURLs;
-		//				RoleBundleBuildList.Add(ab);
-
 		}
 	}
 
@@ -277,7 +274,7 @@ class RoleEditor{
 
 		string bundleName = CurBuildSex +"/bone/"+ go.name.ToLower() + "_bone";
 		string relePath =  boneAssetFolderPath+"bone.prefab";
-		Debug.LogError ("---------------relePath:"+relePath+" bundleName:"+bundleName);
+		//Debug.LogError ("---------------relePath:"+relePath+" bundleName:"+bundleName);
 		EditorHelper.SetAssetBundleName (relePath,bundleName);
 
 	}
@@ -427,37 +424,9 @@ class RoleEditor{
 		Log.i ("RoleEditor","CleanTempAsset","分离出动作文件:"+_outputAnimFullPath,bShowLog);
 	}
 
-	/// <summary>
-	/// 清理掉临时asset资源
-	/// </summary>
-//	static void CleanTempAsset()
-//	{
-//		Log.i ("RoleEditor","CleanTempAsset","开始清理TempAsset",bShowLog);
-//		//清理临时文件夹5d
-//		EditorHelper.DeleteFolder(RoleEditorHelper.EDITOR_TEMP_ASSET_PATH);
-//		EditorHelper.CreateFolder (RoleEditorHelper.EDITOR_TEMP_ASSET_PATH);
-//	}
-
 	#endregion
 
 
-	#region tool
-
-//	public static string Md5Sum (string strToEncrypt)
-//	{
-//		byte[] bs = UTF8Encoding.UTF8.GetBytes (strToEncrypt);
-//		System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5CryptoServiceProvider.Create ();
-//
-//		byte[] hashBytes = md5.ComputeHash (bs);
-//
-//		string hashString = "";
-//		for (int i = 0; i < hashBytes.Length; i++) {
-//			hashString += System.Convert.ToString (hashBytes [i], 16).PadLeft (2, '0');
-//		}
-//		return hashString.PadLeft (32, '0');
-//	}
-
-	#endregion
 
 }
 
