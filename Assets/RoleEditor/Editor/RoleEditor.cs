@@ -229,7 +229,9 @@ class RoleEditor{
 			string[] _animURLs = EditorHelper.GetSubFilesPaths(_animGroupURLs[j]);
 			for (int k = 0; k < _animURLs.Length; k++)
 			{
-
+				if (_animURLs [k].EndsWith (".meta"))
+					continue;
+					
 				bool b = CheckNeedUpdate (_animURLs[k]);//step2
 				if (!b)//资源没变化，不需要再分离动画
 					continue;
@@ -460,7 +462,7 @@ class RoleEditor{
 	public static bool CheckNeedUpdate(string fileAbsPath)
 	{
 		string realModifyPath = DetectRepeatRes.GetRealModifyURL (fileAbsPath);
-
+		//Debug.LogError (" -------------absPath:"+fileAbsPath+" realModifyPath:"+realModifyPath);
 		bool b = DetectRepeatRes.GetMD5Dic().ContainsKey (realModifyPath);
 
 		if (b) 

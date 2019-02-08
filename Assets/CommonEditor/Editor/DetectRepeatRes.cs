@@ -24,6 +24,12 @@ using System.IO;
 /// </summary>
 public class DetectRepeatRes {
 
+	public static string MD5CheckDicFolderPath{
+		get{ 
+
+			return EditorHelper.GetParentFolderPath(Application.dataPath)+"/md5/";
+		}
+	}
 
 	public static string MD5CheckDicPath{
 		get{ 
@@ -85,6 +91,11 @@ public class DetectRepeatRes {
 		}
 
 		byte[] bs = ib.ToArray ();
+
+		//目录不存在就创建
+		if (!EditorHelper.BeFolderExist (MD5CheckDicFolderPath)) {
+			EditorHelper.CreateFolder (MD5CheckDicFolderPath);
+		}
 
 		FileHelper.WriteBytes2File (MD5CheckDicPath,bs);
 
