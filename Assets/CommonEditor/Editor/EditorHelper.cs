@@ -263,6 +263,15 @@ public static class EditorHelper{
 		//asset.assetBundleVariant = bundleVariant;
 		//asset.GetHashCode ();
 		//asset.assetTimeStamp();
+
+		//重复设置同一bundle名称
+		string oldName = asset.assetBundleName;
+		if (oldName.Equals (bundleName)) {
+			Debug.LogError ("EditorHelper.SetAssetBundleName 重复设置同一bundle名称:"+bundleName+" 设置失败");
+			return;
+		}
+			
+
 		asset.SetAssetBundleNameAndVariant(bundleName,bundleVariant);
 		asset.SaveAndReimport();
 

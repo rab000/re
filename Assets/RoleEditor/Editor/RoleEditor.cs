@@ -85,6 +85,9 @@ class RoleEditor{
 		
 		EditorHelper.CreateFolder (RoleEditorHelper.ABOutputPath);
 
+		DetectRepeatRes.LoadCheckDic ();//step1
+		CheckDelRes();//检测是有dic中存在，但工程中不存在的资源
+
 		string manFolderPath = RoleEditorHelper.EDITOR_ROLE_ORIGNAL_RES_PATH + "/man";
 
 		string womenFolderPath = RoleEditorHelper.EDITOR_ROLE_ORIGNAL_RES_PATH + "/women";
@@ -101,6 +104,8 @@ class RoleEditor{
 
 		BuildPipeline.BuildAssetBundles (RoleEditorHelper.ABOutputPath,BuildAssetBundleOptions.None,BuildTarget.StandaloneWindows64);
 
+
+		DetectRepeatRes.SaveCheckDic ();
 	}
 
 
@@ -140,6 +145,12 @@ class RoleEditor{
 		for (int j = 0; j < _modelURLs.Length; j++)//理论上可以有多个bone，这里资源文件夹里只放一个
 		{
 			if (!_modelURLs[j].EndsWith(".meta")){
+
+
+				bool b = CheckNeedUpdate (_modelURLs[j]);//step2
+				if (!b)//资源没变化，不需要再分拆一次骨骼
+					continue;
+
 				Log.i ("RoleEditor","ProcessBone","开始骨骼地址 _modelURLs["+j+"]->"+_modelURLs[j]);
 				Object _modelObj = AssetDatabase.LoadAssetAtPath<Object>(EditorHelper.ChangeToRelativePath(_modelURLs[j]));
 				_modelGo = GameObject.Instantiate(_modelObj) as GameObject;
@@ -157,6 +168,11 @@ class RoleEditor{
 		GameObject _modelGo = null;
 		for (int j = 0; j < _modelURLs.Length; j++){//注意一个Model文件夹里目前只允许出现1个model，这个model包括所有换装模型
 			if (!_modelURLs[j].EndsWith(".meta")){
+
+				bool b = CheckNeedUpdate (_modelURLs[j]);//step2
+				if (!b)//资源没变化，不需要再分拆一次模型
+					continue;
+
 				Log.i ("RoleEditor","CreateAllRoleAB","开始遍历模型 模型地址 _modelURLs["+j+"]->"+_modelURLs[j]);
 				Object _modelObj = AssetDatabase.LoadAssetAtPath<Object>(EditorHelper.ChangeToRelativePath(_modelURLs[j]));
 				_modelGo = GameObject.Instantiate(_modelObj) as GameObject;
@@ -182,6 +198,12 @@ class RoleEditor{
 		EditorHelper.CreateFolder(folderPath);
 		for (int i = 0; i < matURLs.Length; i++) 
 		{
+
+			bool b = CheckNeedUpdate (matURLs[i]);//step2
+			if (!b)//资源没变化，不需要移动一次mat
+				continue;
+			
+
 			string orignalPath = matURLs[i];
 			string tempRelePath = orignalPath.Substring (RoleEditorHelper.EDITOR_ROLE_ORIGNAL_RES_PATH.Length);
 			string newPath = RoleEditorHelper.EDITOR_TEMP_ASSET_PATH + tempRelePath; 
@@ -202,10 +224,16 @@ class RoleEditor{
 		string[] _animGroupURLs = EditorHelper.GetSubFolderPaths(_animFolderUrl);
 		Log.i ("RoleEditor","CreateAllRoleAB","准备分离动作 找到animGroup数量:"+_animFolderUrl.Length);
 		
-		for (int j = 0; j < _animGroupURLs.Length; j++) {
+		for (int j = 0; j < _animGroupURLs.Length; j++) 
+		{
 			string[] _animURLs = EditorHelper.GetSubFilesPaths(_animGroupURLs[j]);
 			for (int k = 0; k < _animURLs.Length; k++)
 			{
+
+				bool b = CheckNeedUpdate (_animURLs[k]);//step2
+				if (!b)//资源没变化，不需要再分离动画
+					continue;
+
 				Log.i ("RoleEditor","CreateAllRoleAB","开始分离动作,当前动作组:"+_animGroupURLs[j]+" 当前分离动作"+_animURLs[k]);
 				AnimSeparate(_animURLs[k]);
 			}
@@ -427,19 +455,113 @@ class RoleEditor{
 	#endregion
 
 	#region 预处理原始资源(变更检测)
-	//处理每个要预处理的资源时都检查下
-	public static void CheckCheck(string filePath)
-	{
-		//不存在就加入
 
-		//存在就检查是否有变化
+	//处理每个要预处理的资源时都检查下,检测当前资源是否需要重新处理 ,返回true需要重新处理
+	public static bool CheckNeedUpdate(string fileAbsPath)
+	{
+		string realModifyPath = DetectRepeatRes.GetRealModifyURL (fileAbsPath);
+
+		bool b = DetectRepeatRes.GetMD5Dic().ContainsKey (realModifyPath);
+
+		if (b) 
+		{
+			//存在
+			bool bChanged = DetectRepeatRes.BeFileChanged(fileAbsPath);
+			if (bChanged) 
+			{
+				string md5 = DetectRepeatRes.GetMD5(realModifyPath);
+				DetectRepeatRes.ModifyMD5Dic(realModifyPath,md5);
+				return true;
+			}
+		} 
+		else
+		{
+			//不存在
+			string md5 = DetectRepeatRes.GetMD5(realModifyPath);
+			DetectRepeatRes.Add2MD5Dic(realModifyPath,md5);
+			return true;
+		}
+
+		return false;
+
 	}
 
 	//检查是否有资源被删除，如果原始资源被删除，那么要清空待打包asset和打出来的bundle资源
 	public static void CheckDelRes()
 	{
-		//这里暂时没法删除老资源，分拆部位不确定
+		var dic = DetectRepeatRes.GetMD5Dic ();
+
+		foreach (var p in dic) 
+		{
+			bool b = EditorHelper.BeFileExist(p.Key);
+
+			if (!b) 
+			{
+				//从记录表中剔除
+				DetectRepeatRes.DelFromMD5Dic (p.Key);
+
+				DelAssetAndBundle(p.Key);
+
+			}
+
+		}
+
 	}
+
+	//这段代码比较特殊
+	//用来删除过期的asset，bundle文件
+	//检测asset目录是否有这个资源的生成文件，有则删除
+	//检测bundle目录是否有这个资源的生成文件,有则删除
+	private static void DelAssetAndBundle(string fileAbsPath)
+	{
+		//问题，怎么判断文件类型，anim，model，mat，bone
+		string resType = null;
+
+		if (fileAbsPath.Contains ("anim"))
+			resType = "anim"; 
+
+		if (fileAbsPath.Contains ("bone"))
+			resType = "bone"; 
+
+		if (fileAbsPath.Contains ("model"))
+			resType = "model"; 
+
+		if (fileAbsPath.Contains ("mat"))
+			resType = "mat";
+
+		string relePath = fileAbsPath.Substring(RoleEditorHelper.EDITOR_ROLE_ORIGNAL_RES_PATH.Length);
+
+		string delPath = null;
+
+		switch (resType) 
+		{
+		case "anim":
+			string pPath = EditorHelper.GetParentFolderPath (relePath);
+			delPath = RoleEditorHelper.EDITOR_TEMP_ASSET_PATH + pPath;
+			break;
+		case "model":
+
+			//fbx的文件夹相对路径
+			string parentPath = EditorHelper.GetParentFolderPath (relePath);
+			//没后缀的名称
+			string fileNameWithEx = EditorHelper.GetFileNameFromPath (fileAbsPath, true);
+			//Asset中存放模型的文件夹路径
+			delPath = RoleEditorHelper.EDITOR_TEMP_ASSET_PATH + parentPath + "/" + fileNameWithEx;
+
+			EditorHelper.DeleteFolder (delPath,true);
+
+			break;
+		case "bone":
+		case "mat":
+			delPath = RoleEditorHelper.EDITOR_TEMP_ASSET_PATH + relePath;
+			//EditorHelper.DeleteFileIfExists ();
+			break;
+		}
+
+		Debug.Log ("RoleEditor.DelAssetAndBundle relePath:" + relePath+" delPath:"+delPath);
+
+	} 
+
 
 	#endregion
 }

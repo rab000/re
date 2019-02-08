@@ -15,6 +15,12 @@ using System.IO;
 /// 对于unity来说，分内置资源(mat等)和外部资源(fbx等)
 /// 内置资源资源变化看资源本身(md5)是否发生变化
 /// 外部资源检测变化要看.meta(md5)文件是否发生变化
+/// 
+///	life
+///	1 每次build初始先载入txt到dic
+///	2 检测是否有资源被删除
+///	3 每次处理原始(分拆)资源前，检测是否有变化，是否是新增，新增或变化都要更新dic
+///	4 每次打完包把dic写入外部
 /// </summary>
 public class DetectRepeatRes {
 
@@ -26,8 +32,8 @@ public class DetectRepeatRes {
 		}
 	}
 
-	//记录资源相对路径和md5
-	public static Dictionary<string,string> PathMD5Dic = new Dictionary<string, string>();
+	//记录资源绝对路径和md5
+	private static Dictionary<string,string> PathMD5Dic = new Dictionary<string, string>();
 
 
 
@@ -37,7 +43,10 @@ public class DetectRepeatRes {
 
 		if (!b)
 			return;
-		
+
+		if (PathMD5Dic.Count > 0)
+			PathMD5Dic.Clear ();
+
 		var bs = FileHelper.ReadBytesFromFile (MD5CheckDicPath);
 
 		IoBuffer ib = new IoBuffer (102400);
@@ -81,26 +90,38 @@ public class DetectRepeatRes {
 
 	}	
 
-	public static void Add2MD5Dic()
-	{
-		 
+	public static Dictionary<string,string> GetMD5Dic(){
+		return PathMD5Dic;
 	}
 
-	public static void DelFromMD5Dic()
+	public static void Add2MD5Dic(string absPath,string md5)
 	{
+		PathMD5Dic.Add (absPath,md5);
+	}
 
+	public static void ModifyMD5Dic(string absPath,string md5)
+	{
+		if (PathMD5Dic.ContainsKey (absPath)) {
+			PathMD5Dic [absPath] = md5;
+		} 
+		else 
+		{
+			Debug.LogError ("DetectRepeatRes.ModifyMD5Dic dic中找不到key " + absPath);
+		}
+
+	}
+
+	public static void DelFromMD5Dic(string absPath)
+	{
+		PathMD5Dic.Remove (absPath);
 	}
 
 	//检查资源变更
-	public static bool BeFileChanged(string filePath)
+	public static bool BeFileChanged(string fileAbsPath)
 	{
 		//string path = "D:/workspace/gitspace/re/Assets/RoleEditor/Res/man/mat/hanxin.mat";
 
-		string tFilePath = filePath;
-
-		bool bNative = BeUnityNativeRes (filePath);
-
-		if(bNative)tFilePath = tFilePath+".meta";
+		string tFilePath = GetRealModifyURL(fileAbsPath);
 
 		var relePath = EditorHelper.ChangeToRelativePath (tFilePath);
 
@@ -119,16 +140,38 @@ public class DetectRepeatRes {
 		return true;
 	}
 
-	public static bool BeUnityNativeRes(string filePath)
+	//是否是untiy内部资源mat文件等，对应的外部资源就是fbx等
+	public static bool BeUnityNativeRes(string fileAbsPath)
 	{
-		string relePath = EditorHelper.ChangeToRelativePath (filePath);
+		string relePath = EditorHelper.ChangeToRelativePath (fileAbsPath);
 		string strID = AssetDatabase.AssetPathToGUID (relePath);
 		int id = EditorHelper.GetInstanceIDFromGUID (strID);
 		bool b = AssetDatabase.IsNativeAsset (id);
 		return b;
 	}
 
+	//输入绝对地址，检测是否是内部资源，如果是地址不变，如果是外部资源，返回对应.meta文件地址
+	public static string GetRealModifyURL(string fileAbsPath)
+	{
+		string filePath = fileAbsPath;
 
+		bool bNativeRes = DetectRepeatRes.BeUnityNativeRes(fileAbsPath);
+
+		if (!bNativeRes) 
+		{
+			filePath = fileAbsPath + ".meta";
+		}
+
+		return filePath;
+	}
+
+
+	public static string GetMD5(string fileAbsPath)
+	{
+		var bs = File.ReadAllText (fileAbsPath);
+		var hash = MD5.Md5Sum (bs);
+		return hash;
+	}
 
 //	public static void TT(string folderPath)
 //	{
