@@ -317,64 +317,7 @@ public static class EditorHelper{
 
 	#endregion
 
-	#region 重复资源监测
 
-
-	public static void TT(string folderPath)
-	{
-		string path = "D:/workspace/gitspace/re/Assets/RoleEditor/Res/man/mat/hanxin.mat";
-		//string path = "D:/workspace/gitspace/re/Assets/RoleEditor/Res/man/model/hx.FBX.meta";
-		var bs = File.ReadAllText (path);
-		var hash = MD5.Md5Sum (bs);
-		Debug.LogError ("---------->Hash:"+hash);
-
-		string resPath = "Assets/RoleEditor/Res/man/mat/hanxin.mat";
-		string ids = AssetDatabase.AssetPathToGUID (resPath);
-
-		int id = EditorHelper.GetInstanceIDFromGUID (ids);
-		bool bF = AssetDatabase.IsForeignAsset (id);
-		bool bN = AssetDatabase.IsNativeAsset (id);
-
-		string resPath2 = "Assets/RoleEditor/Res/man/model/hx.FBX";
-		string id2str = AssetDatabase.AssetPathToGUID (resPath2);
-		int id2 = EditorHelper.GetInstanceIDFromGUID (id2str);
-		bool bF2 = AssetDatabase.IsForeignAsset (id2);
-		bool bN2 = AssetDatabase.IsNativeAsset (id2);
-
-		Debug.LogError ("ids:"+ids+" id:"+id+" bf:"+bF+" bn:"+bN+" ------------ids2:"+id2str+" id2:"+id2+" bf2:"+bF2+" bn2:"+bN2);
-
-	}
-
-	//记录资源相对路径和md5
-	public static Dictionary<string,string> PathMD5Dic = new Dictionary<string, string>();
-
-	//初始化资源变更检测,检查标准资源是否还存在
-	public static void InitHashcodeDic()
-	{
-
-	}
-
-	public static void Add2HashDic()
-	{
-
-	}
-
-	public static void DelFromHashDic()
-	{
-
-	}
-
-	//检查资源变更
-	public static bool BeFileChanged()
-	{
-		string path = "D:/workspace/gitspace/re/Assets/RoleEditor/Res/man/mat/hanxin.mat";
-		var bs = File.ReadAllText (path);
-		var hash = MD5.Md5Sum (bs);
-		return false;
-	}
-
-
-	#endregion
 
 	#region other 这个以后要放到通用工具类中
 	/// <summary>

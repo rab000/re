@@ -426,8 +426,22 @@ class RoleEditor{
 
 	#endregion
 
+	#region 预处理原始资源(变更检测)
+	//处理每个要预处理的资源时都检查下
+	public static void CheckCheck(string filePath)
+	{
+		//不存在就加入
 
+		//存在就检查是否有变化
+	}
 
+	//检查是否有资源被删除，如果原始资源被删除，那么要清空待打包asset和打出来的bundle资源
+	public static void CheckDelRes()
+	{
+		//这里暂时没法删除老资源，分拆部位不确定
+	}
+
+	#endregion
 }
 
 
