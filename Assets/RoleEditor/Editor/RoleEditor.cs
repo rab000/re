@@ -462,7 +462,7 @@ class RoleEditor{
 	public static bool CheckNeedUpdate(string fileAbsPath)
 	{
 		string realModifyPath = DetectRepeatRes.GetRealModifyURL (fileAbsPath);
-		//Debug.LogError (" -------------absPath:"+fileAbsPath+" realModifyPath:"+realModifyPath);
+
 		bool b = DetectRepeatRes.GetMD5Dic().ContainsKey (realModifyPath);
 
 		if (b) 
@@ -473,6 +473,7 @@ class RoleEditor{
 			{
 				string md5 = DetectRepeatRes.GetMD5(realModifyPath);
 				DetectRepeatRes.ModifyMD5Dic(realModifyPath,md5);
+				Debug.LogError ("更新，存在并修改-------------absPath:"+fileAbsPath+" realModifyPath:"+realModifyPath);
 				return true;
 			}
 		} 
@@ -481,9 +482,11 @@ class RoleEditor{
 			//不存在
 			string md5 = DetectRepeatRes.GetMD5(realModifyPath);
 			DetectRepeatRes.Add2MD5Dic(realModifyPath,md5);
+			Debug.LogError ("更新，不存在------------absPath:"+fileAbsPath+" realModifyPath:"+realModifyPath);
 			return true;
 		}
 
+		Debug.LogError ("不需要更新------------absPath:"+fileAbsPath+" realModifyPath:"+realModifyPath);
 		return false;
 
 	}

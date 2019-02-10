@@ -134,21 +134,24 @@ public class DetectRepeatRes {
 
 		string tFilePath = GetRealModifyURL(fileAbsPath);
 
-		var relePath = EditorHelper.ChangeToRelativePath (tFilePath);
+		//var relePath = EditorHelper.ChangeToRelativePath (tFilePath);
 
 		var bs = File.ReadAllText (tFilePath);
 
 		var hash = MD5.Md5Sum (bs);
 
-		bool b = PathMD5Dic.ContainsKey (relePath);
+		bool b = PathMD5Dic.ContainsKey (tFilePath);
 
-		if (b && hash.Equals (PathMD5Dic [relePath]))
+		if (b && hash.Equals (PathMD5Dic [tFilePath]))
 		{
 			//md5没发生变化
 			return false;
 		}
 
+		Debug.LogError("改变了,原始md5:"+PathMD5Dic [tFilePath] + " 新md5:"+hash);
+
 		return true;
+
 	}
 
 	//是否是untiy内部资源mat文件等，对应的外部资源就是fbx等
