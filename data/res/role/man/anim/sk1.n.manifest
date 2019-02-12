@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 3756154641
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e9ef91be5914b94c09a7a6226123d736
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 57cc261e7722b8429fae0fb29649ddb8
+HashAppended: 0
+ClassTypes:
+- Class: 74
+  Script: {instanceID: 0}
+Assets:
+- Assets/Asset4Build/man/anim/sk1/sk2.anim
+- Assets/Asset4Build/man/anim/sk1/sk1.anim
+- Assets/Asset4Build/man/anim/sk1/sk0.anim
+Dependencies: []

@@ -1,0 +1,31 @@
+ManifestFileVersion: 0
+CRC: 3272870470
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 6358e77b13ecffb5fa634ccdd1ba45f3
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 18206fd0106887d2e59cee528c1502f6
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5ee977fdc3159b140955ab8d59ccfb5f, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Asset4Build/women/model/female/face-1/mesh.prefab
+- Assets/Asset4Build/women/model/female/face-1/bonenames.asset
+Dependencies: []

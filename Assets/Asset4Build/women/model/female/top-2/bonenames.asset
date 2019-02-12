@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ee977fdc3159b140955ab8d59ccfb5f, type: 3}
+  m_Name: bonenames
+  m_EditorClassIdentifier: 
+  content:
+  - Female_Spine1
+  - Female_RightShoulder
+  - Female_RightArm
+  - Female_Spine
+  - Female_Hips
+  - Female_LeftShoulder
+  - Female_LeftArm
+  - Female_LeftForeArm
+  - Female_LeftHand
+  - Female_LeftThumb1
+  - Female_LeftThumb2
+  - Female_RightForeArm
+  - Female_RightHand
+  - Female_RightThumb1
+  - Female_LeftPinky1
+  - Female_LeftRing1
+  - Female_LeftRing2
+  - Female_LeftIndex1
+  - Female_LeftIndex2
+  - Female_LeftThumb3
+  - Female_LeftMiddle1
+  - Female_LeftMiddle2
+  - Female_LeftPinky2
+  - Female_RightThumb2
+  - Female_RightPinky1
+  - Female_RightRing1
+  - Female_RightRing2
+  - Female_RightIndex1
+  - Female_RightIndex2
+  - Female_RightThumb3
+  - Female_RightMiddle1
+  - Female_RightMiddle2
+  - Female_RightPinky2
