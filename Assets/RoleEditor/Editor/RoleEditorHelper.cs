@@ -45,7 +45,7 @@ public class RoleEditorHelper{
 	/// <value>The output path.</value>
 	public static string ABOutputPath{
 
-		get{ return EditorHelper.OUTPUT_ROOT_PATH+"/res/role/";}
+		get{ return EditorHelper.OUTPUT_ROOT_PATH+"/res/re/";}
 
 	}
 

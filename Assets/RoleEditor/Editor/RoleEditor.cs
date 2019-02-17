@@ -461,6 +461,7 @@ class RoleEditor{
 	//处理每个要预处理的资源时都检查下,检测当前资源是否需要重新处理 ,返回true需要重新处理
 	public static bool CheckNeedUpdate(string fileAbsPath)
 	{
+		
 		string realModifyPath = DetectRepeatRes.GetRealModifyURL (fileAbsPath);
 
 		bool b = DetectRepeatRes.GetMD5Dic().ContainsKey (realModifyPath);

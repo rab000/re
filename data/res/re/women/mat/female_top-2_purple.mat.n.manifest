@@ -1,0 +1,20 @@
+ManifestFileVersion: 0
+CRC: 2638104368
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b5663d31665dad579651e0f9a64e8021
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 6f165f44e4778b6c9d85e7a145a54cb1
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Asset4Build/women/mat/female_top-2_purple.mat
+Dependencies: []

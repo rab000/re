@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 1366118201
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 389fa6149680dc5296b56518dd65cf12
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 57cc261e7722b8429fae0fb29649ddb8
+HashAppended: 0
+ClassTypes:
+- Class: 74
+  Script: {instanceID: 0}
+Assets:
+- Assets/Asset4Build/women/anim/common/walk.anim
+- Assets/Asset4Build/women/anim/common/idle1.anim
+- Assets/Asset4Build/women/anim/common/attack.anim
+Dependencies: []
