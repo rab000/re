@@ -200,10 +200,17 @@ public static class EditorHelper{
 
 	public static int GetInstanceIDFromGUID(string guid)
 	{
-		System.Reflection.MethodInfo method = typeof( AssetDatabase).GetMethod("GetInstanceIDFromGUID"
-			, System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-		int result =(int) method.Invoke(null,new object[]{ (object)guid});
-		return result;
+
+  //      System.Reflection.MethodInfo method = typeof( AssetDatabase).GetMethod("GetInstanceIDFromGUID"
+		//	, System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+		//int result =(int) method.Invoke(null,new object[]{ (object)guid});
+
+
+        int result = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(AssetDatabase.GUIDToAssetPath(guid)).GetInstanceID();
+
+
+
+        return result;
 	}
 	#endregion
 
