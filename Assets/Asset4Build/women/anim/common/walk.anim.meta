@@ -1,10 +1,8 @@
 fileFormatVersion: 2
 guid: b356d5c2cb81bee4aac43dfb7fbff9a5
-timeCreated: 1550413255
-licenseType: Pro
 NativeFormatImporter:
   externalObjects: {}
-  mainObjectFileID: 7400000
+  mainObjectFileID: 110800000
   userData: 
   assetBundleName: women/anim/common
   assetBundleVariant: n

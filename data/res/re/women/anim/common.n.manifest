@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1366118201
+CRC: 3858316575
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 389fa6149680dc5296b56518dd65cf12
+    Hash: 1b1ebe908fe5e76370693e6120938218
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 57cc261e7722b8429fae0fb29649ddb8
+    Hash: f346130d2dbb558a459458129b1234a4
 HashAppended: 0
 ClassTypes:
-- Class: 74
+- Class: 1108
   Script: {instanceID: 0}
 Assets:
 - Assets/Asset4Build/women/anim/common/walk.anim

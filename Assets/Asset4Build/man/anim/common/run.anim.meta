@@ -1,10 +1,8 @@
 fileFormatVersion: 2
 guid: 5154f1d19b416924daaf8e722e09dd16
-timeCreated: 1550413237
-licenseType: Pro
 NativeFormatImporter:
   externalObjects: {}
-  mainObjectFileID: 7400000
+  mainObjectFileID: 110800000
   userData: 
   assetBundleName: man/anim/common
   assetBundleVariant: n
