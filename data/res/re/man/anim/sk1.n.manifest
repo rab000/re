@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2637721862
+CRC: 3250619402
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a44c1e1541b074eb275767f4ec976107
+    Hash: edd1777974410b209d3f0ae66c5acd1f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: f346130d2dbb558a459458129b1234a4
+    Hash: af57576da81d5d3ce45807ac11234de6
 HashAppended: 0
 ClassTypes:
-- Class: 1108
+- Class: 74
   Script: {instanceID: 0}
 Assets:
 - Assets/Asset4Build/man/anim/sk1/sk2.anim

@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3170389586
+CRC: 2168616435
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a702342e97165bd5bf35265864e99688
+    Hash: 12cc356fb195c1d8fb06620a325f9fe1
   TypeTreeHash:
     serializedVersion: 2
-    Hash: f346130d2dbb558a459458129b1234a4
+    Hash: af57576da81d5d3ce45807ac11234de6
 HashAppended: 0
 ClassTypes:
-- Class: 1108
+- Class: 74
   Script: {instanceID: 0}
 Assets:
 - Assets/Asset4Build/man/anim/common/run.anim
