@@ -78,9 +78,33 @@ class RoleEditor{
 	//记录下当前打包性别，创建文件夹用
 	public static string CurBuildSex;
 
-	//打包换装模型
-	[MenuItem("RoleEditor/BuildChangeEquipBundle")]
-	public static void BuildChangeEquipBundle()
+    [MenuItem("RoleEditor/Win")]
+    public static void BuildChangeEquipBundleWin64()
+    {
+        BuildChangeEquipBundle("win");
+    }
+
+    [MenuItem("RoleEditor/Mac")]
+    public static void BuildChangeEquipBundleMac()
+    {
+        BuildChangeEquipBundle("mac");
+    }
+
+    [MenuItem("RoleEditor/Ios")]
+    public static void BuildChangeEquipBundleIos()
+    {
+        BuildChangeEquipBundle("ios");
+    }
+
+    [MenuItem("RoleEditor/Android")]
+    public static void BuildChangeEquipBundleAndroid()
+    {
+        BuildChangeEquipBundle("android");
+    }
+
+    //打包换装模型
+    //[MenuItem("RoleEditor/BuildChangeEquipBundle")]
+	public static void BuildChangeEquipBundle(string platform)
 	{
 		
 		EditorHelper.CreateFolder (RoleEditorHelper.ABOutputPath);
@@ -102,12 +126,32 @@ class RoleEditor{
 
 		AssetDatabase.Refresh();
 
-		BuildPipeline.BuildAssetBundles (RoleEditorHelper.ABOutputPath,BuildAssetBundleOptions.None,BuildTarget.StandaloneWindows64);
+        switch (platform)
+        {
+            case "win":
+                BuildPipeline.BuildAssetBundles(RoleEditorHelper.ABOutputPath, BuildAssetBundleOptions.UncompressedAssetBundle, BuildTarget.StandaloneWindows64);
+                break;
+            case "mac":
+                BuildPipeline.BuildAssetBundles(RoleEditorHelper.ABOutputPath, BuildAssetBundleOptions.UncompressedAssetBundle, BuildTarget.StandaloneOSX);
+                break;
+            case "ios":
+                BuildPipeline.BuildAssetBundles(RoleEditorHelper.ABOutputPath, BuildAssetBundleOptions.UncompressedAssetBundle, BuildTarget.iOS);
+                break;
+            case "android":
+                BuildPipeline.BuildAssetBundles(RoleEditorHelper.ABOutputPath, BuildAssetBundleOptions.UncompressedAssetBundle, BuildTarget.Android);
+                break;
+        }
 
+		
 
 		DetectRepeatRes.SaveCheckDic ();
 	}
 
+    [MenuItem("RoleEditor/ClearMD5")]
+    public static void ClearMD5Cache()
+    {
+        DetectRepeatRes.ClearCheckDic();
+    }
 
 	//处理一组换装资源，传入man或women资源文件夹路径
 	public static void ProcessChangeEquip(string folderPath)

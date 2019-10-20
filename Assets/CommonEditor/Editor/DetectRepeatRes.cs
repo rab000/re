@@ -70,7 +70,6 @@ public class DetectRepeatRes {
 
 	}
 
-
 	public static void SaveCheckDic()
 	{
 		EditorHelper.DeleteFileIfExists (MD5CheckDicPath);
@@ -99,7 +98,12 @@ public class DetectRepeatRes {
 
 		FileHelper.WriteBytes2File (MD5CheckDicPath,bs);
 
-	}	
+	}
+
+    public static void ClearCheckDic()
+    {
+        EditorHelper.DeleteFileIfExists(MD5CheckDicPath);
+    }
 
 	public static Dictionary<string,string> GetMD5Dic(){
 		return PathMD5Dic;
