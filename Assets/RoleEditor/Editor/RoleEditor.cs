@@ -541,20 +541,34 @@ class RoleEditor{
 	{
 		var dic = DetectRepeatRes.GetMD5Dic ();
 
+		List<string> resPathList = new List<string>();
+
 		foreach (var p in dic) 
 		{
 			bool b = EditorHelper.BeFileExist(p.Key);
 
 			if (!b) 
 			{
+				//写这里2019.3会报错
+				//InvalidOperationException: Collection was modified; enumeration operation may not execute.
 				//从记录表中剔除
-				DetectRepeatRes.DelFromMD5Dic (p.Key);
+				//DetectRepeatRes.DelFromMD5Dic (p.Key);
 
-				DelAssetAndBundle(p.Key);
+				//DelAssetAndBundle(p.Key);
+
+				resPathList.Add(p.Key);
 
 			}
 
 		}
+
+		for (int i = 0; i < resPathList.Count; i++) 
+		{
+			DetectRepeatRes.DelFromMD5Dic (resPathList[i]);
+
+			DelAssetAndBundle(resPathList[i]);
+		}
+
 
 	}
 
